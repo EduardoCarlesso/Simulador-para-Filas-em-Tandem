@@ -1,17 +1,5 @@
-"""
-Simulador de Rede de Filas em Tandem
-Simulação de Eventos Discretos (SED)
-
-Fila 1: G/G/2/3 – Chegadas entre 1 e 4, atendimento entre 3 e 4
-Fila 2: G/G/1/5 – Atendimento entre 2 e 3
-A saída da Fila 1 é a entrada da Fila 2.
-"""
-
 import heapq
 
-# ======================================================
-# GERADOR CONGRUENCIAL LINEAR (LCG)
-# ======================================================
 class LCG:
     def __init__(self, seed=1):
         self.m = 2**31
@@ -29,9 +17,6 @@ class LCG:
         return a + self.random() * (b - a)
 
 
-# ======================================================
-# CLASSE FILA
-# ======================================================
 class Fila:
     def __init__(self, id, servidores, capacidade,
                  servico_min, servico_max,
@@ -51,9 +36,6 @@ class Fila:
         self.acumulado = [0.0] * (capacidade + 1)
 
 
-# ======================================================
-# SIMULADOR
-# ======================================================
 class Simulador:
     CHEGADA = 0
     SAIDA = 1
@@ -92,9 +74,7 @@ class Simulador:
 
         self.tempo_primeira_chegada = 1.5
 
-    # ==================================================
-    # FUNÇÕES AUXILIARES
-    # ==================================================
+
     def agendar(self, tempo, tipo, fila_id):
         heapq.heappush(self.eventos, (tempo, tipo, fila_id))
 
@@ -104,9 +84,7 @@ class Simulador:
             fila.acumulado[fila.no_sistema] += delta
         self.tempo = novo_tempo
 
-    # ==================================================
-    # EVENTO DE CHEGADA
-    # ==================================================
+
     def chegada(self, fila_id, externa=False):
         fila = self.filas[fila_id]
 
@@ -142,9 +120,6 @@ class Simulador:
                     fila_id
                 )
 
-    # ==================================================
-    # EVENTO DE SAÍDA
-    # ==================================================
     def saida(self, fila_id):
         fila = self.filas[fila_id]
 
@@ -170,9 +145,7 @@ class Simulador:
         if destino is not None:
             self.chegada(destino, externa=False)
 
-    # ==================================================
-    # EXECUÇÃO DA SIMULAÇÃO
-    # ==================================================
+
     def executar(self):
         # Agenda a primeira chegada na Fila 1
         self.agendar(
@@ -192,9 +165,7 @@ class Simulador:
 
         self.salvar_resultados()
 
-    # ==================================================
-    # SALVA RESULTADOS
-    # ==================================================
+
     def salvar_resultados(self):
         linhas = []
         linhas.append("=" * 58)
